@@ -1,0 +1,136 @@
+---
+title: "joins"
+author: "Daniel Chen"
+date: "6/5/2018"
+output: 
+  html_document: 
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tibble)
+library(dplyr)
+```
+
+```{r}
+x <- tribble(
+    ~key, ~val_x,
+    1, "x1",
+    2, "x2",
+    3, "x3"
+)
+x
+```
+
+```{r}
+y <- tribble(
+    ~key, ~val_y,
+    1, "y1",
+    2, "y2",
+    4, "y3"
+)
+y
+```
+
+
+```{r}
+x %>% 
+    inner_join(y, by = 'key')
+```
+
+
+```{r}
+x %>% 
+    left_join(y, by = 'key')
+```
+
+```{r}
+x %>% 
+    right_join(y, by = 'key')
+```
+
+```{r}
+x %>% 
+    full_join(y, by = 'key')
+```
+
+# many to one OR one to many
+```{r}
+(x <- tribble(
+    ~key, ~val_x,
+    1, "x1",
+    2, "x2",
+    3, "x3",
+    1, "x4",
+    1, "x5",
+    1, "x6"
+))
+
+(y <- tribble(
+    ~key, ~val_y,
+    1, "y1",
+    2, "y2",
+    4, "y3"
+))
+```
+
+```{r}
+x %>%
+    left_join(y, by = 'key')
+```
+
+
+
+# many to many
+
+```{r}
+(x <- tribble(
+    ~key, ~val_x,
+    1, "x1",
+    2, "x2",
+    3, "x3",
+    1, "x4",
+    1, "x5",
+    1, "x6"
+))
+
+(y <- tribble(
+    ~key, ~val_y,
+    1, "y1",
+    2, "y2",
+    4, "y3",
+    1, "y4",
+    1, "y5"
+))
+```
+
+a many to many join creates a cartesian product
+
+```{r}
+x %>%
+    left_join(y, by = 'key')
+```
+
+
+The below code won't work, but it's to show you that you can join by multiple keys
+
+```r
+x %>%
+    left_join(y, by = c('key', 'col2', 'col3'))
+```
+
+as well as do joins when columns do not share the same name
+
+```r
+x %>%
+    left_join(y, by = c('key' = 'key2', 'col2' = 'other', 'col3'))
+```

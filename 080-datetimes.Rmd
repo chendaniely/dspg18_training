@@ -1,0 +1,84 @@
+---
+title: "datetimes"
+author: "Daniel Chen"
+date: "6/6/2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(lubridate)
+```
+
+```{r}
+ymd('2018-06-06')
+```
+
+```{r}
+dt_str <- '2018-06-06'
+class(dt_str)
+```
+
+```{r}
+dt_dt <- ymd(dt_str)
+class(dt_dt)
+```
+
+```{r}
+mdy('June 6, 2018')
+```
+
+```{r}
+dmy('06-06-2018')
+```
+
+```{r}
+ymd(20190606)
+```
+
+```{r}
+ymd_hms('2018-06-06 10:33:55', tz = 'EDT')
+```
+
+```{r}
+library(nycflights13)
+flights
+```
+
+```{r}
+flight_times <- flights %>%
+    select(year, month, day, hour, minute)
+flight_times
+```
+
+```{r}
+flight_times %>%
+    mutate(dep_dt = make_datetime(year, month, day, hour, minute))
+```
+
+```{r}
+flights %>%
+    select(year, month, day, hour, minute) %>%
+    mutate(dep_dt = make_datetime(year, month, day, hour, minute))
+```
+
+```{r}
+'06-JUNE-18 10:47:30 AM'
+```
+
+```{r}
+curr_time <- lubridate::as_datetime('WED 06-JUNE-18 10:47:30 AM',
+                       format = '%a %d-%B-%y %I:%M:%S %p',
+                       tz = "EST")
+```
+
+```{r}
+now() - curr_time
+```
+
